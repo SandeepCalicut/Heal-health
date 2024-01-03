@@ -4,6 +4,7 @@ import image from "../images/FORM.jpg";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Login() {
   const navigate = useNavigate();
@@ -21,6 +22,19 @@ function Login() {
       .post("http://localhost:9090/api/login", patient)
       .then((response) => {
         console.log(response);
+        if(response.status===200){
+          toast.success("Login Completed Succesfully",{
+            position:toast.POSITION.TOP_RIGHT,
+            autoClose:2000,
+          })
+        }
+
+        if(response.status===400){
+          toast.success("Login Failed",{
+            position:toast.POSITION.TOP_RIGHT,
+            autoClose:2000,
+          })
+        }
         setPatient(response.data.data);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.userRole);
